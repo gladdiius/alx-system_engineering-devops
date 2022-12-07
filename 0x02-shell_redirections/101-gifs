@@ -1,2 +1,2 @@
 #!/bin/bash
-find ./ -type f | grep ".gif"
+find ./ -type f -printf "%f\n" | grep ".gif"|cut -d "." -f 1
