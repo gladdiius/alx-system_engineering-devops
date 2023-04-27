@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+#this script prints best school 10 times
+
+i=0
+while [ $i -lt 20 ]
+do
+	if [ $i = 3 ];
+	then
+		echo "$i"
+		echo "bad luck from China"
+	elif [ $i = 8 ]
+	then
+		echo "$i"
+		echo "bad luck from Japan"
+	elif [ $i = 16 ]
+	then
+		echo "$i"
+		echo "bad luck from Italy"
+	else
+		echo "$i"
+	fi
+	i=$(( i+1 ))
+done
