@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 #this script shows it own pid
 trap "I am invincible!!!" SIGTERM
-
-while [ True ]
+i=1
+while [ $i = 1 ]
 do
 	echo "To infinity and beyond"
 	sleep 2
