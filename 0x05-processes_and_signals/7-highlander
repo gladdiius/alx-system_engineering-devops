@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-#this script shows it own pid
-trap "I am invincible!!!" SIGTERM
+#blocks sigterm signal
+trap "echo I am invincible!!!" 15
+
 i=1
 while [ $i = 1 ]
 do
