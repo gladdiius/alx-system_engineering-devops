@@ -20,6 +20,7 @@ do
 	if [ SIGQUIT  ] || [ SIGTERM ]
 	then
 		rm /var/run/myscript.pid
+		SIGTERM
 	fi
 done	
 
