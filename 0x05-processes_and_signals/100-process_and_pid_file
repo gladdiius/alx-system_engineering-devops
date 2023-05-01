@@ -1,26 +1,29 @@
 #!/usr/bin/env bash
 #this script shows it own pid
 
+trap graceful_shutdown SIGINT 
+trap close SIGQUIT 
+trap excute SIGTERM
 
 echo $$ > /var/run/myscript.pid
 
-while true 
-do
-	echo "To infinity and beyond"
-	if [ SIGINT ]
-	then
-		echo "Y U no love me?!"
-	fi
+graceful_shutdown()
+{
+	  echo "Y U no love me?!"
+	  exit
+}
 
-	if [ SIGTERM ]
-	then
-		echo "I hate the kill command"
-	fi
+close()
+{
+	 rm /var/run/myscript.pid
+	 kill  SIGTERM $$
+	 exit
+}
 
-	if [ SIGQUIT  ] || [ SIGTERM ]
-	then
-		rm /var/run/myscript.pid
-		SIGTERM
-	fi
-done	
+excute()
+{
+	echo "I hate the kill command"
+	kill  SIGTERM $$
+	exit
+}
 
