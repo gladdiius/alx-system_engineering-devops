@@ -17,7 +17,7 @@ do
 		echo "I hate the kill command"
 	fi
 
-	if [ SIGINT ] || [ SIGTERM ]
+	if [ SIGQUIT  ] || [ SIGTERM ]
 	then
 		rm /var/run/myscript.pid
 	fi
