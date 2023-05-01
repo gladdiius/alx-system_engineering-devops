@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+#this script shows it own pid
+
+
+echo $$ > /var/run/myscript.pid
+
+while true 
+do
+	echo "To infinity and beyond"
+	if [ SIGINT ]
+	then
+		echo "Y U no love me?!"
+	fi
+
+	if [ SIGTERM ]
+	then
+		echo "I hate the kill command"
+	fi
+
+	if [ SIGINT ] || [ SIGTERM ]
+	then
+		rm /var/run/myscript.pid
+	fi
+done	
+
