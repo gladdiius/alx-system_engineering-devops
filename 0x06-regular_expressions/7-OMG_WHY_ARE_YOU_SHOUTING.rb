@@ -15,7 +15,6 @@ def regexp
     if cap.match(/[A-Z]|\?/)
      print "#{cap}"
     end
-    next
   end
 end
 regexp
