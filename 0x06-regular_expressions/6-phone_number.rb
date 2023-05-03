@@ -4,7 +4,7 @@ def regexp
          return
   end
   if ARGV[0].match(/\S\d{10}/)
-    puts ARGV[0]
+    print "#{ARGV[0]}"
   end
 end
 regexp
