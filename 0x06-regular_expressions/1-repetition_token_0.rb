@@ -5,4 +5,3 @@ def regexp
   end
   ARGV[0].match(/hbt{2,5}n/)
 end
-regexp
