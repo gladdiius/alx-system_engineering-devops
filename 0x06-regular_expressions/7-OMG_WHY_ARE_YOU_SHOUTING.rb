@@ -12,7 +12,7 @@ def regexp
   puts disunited
   
   for cap in disunited 
-    if cap.match(/[A-Z]/)
+    if cap.match(/[A-Z]|\?/)
      print "#{cap}"
     end
     next
