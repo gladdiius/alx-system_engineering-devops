@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+#edit the host files 
+nc -l localhost 98
