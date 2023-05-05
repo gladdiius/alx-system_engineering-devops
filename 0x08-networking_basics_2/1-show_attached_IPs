@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #edit the host files 
 ip_addresses=$(hostname -I)
-ip_addresses=(${ip_addresses//" "/ })
+ip_addresses=("${ip_addresses//" "/ }")
 for ip in "${ip_addresses[@]}";
 do
 	  printf "%s\n" "$ip"
