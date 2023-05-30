@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-#lists socket and there process id
-netstat -lp
