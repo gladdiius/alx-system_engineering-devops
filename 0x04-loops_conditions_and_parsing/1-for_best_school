@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
-#this script prints best school 10 times
 
-for I in $(seq 10) 
+for I in {1..10}
 do
-	echo "Best School"
-done   
+	echo "Best school"
+done
