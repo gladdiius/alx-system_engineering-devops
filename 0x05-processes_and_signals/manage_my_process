@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+while [ True ]
+do 
+	echo "I am alive!"
+	sleep 2
+done
