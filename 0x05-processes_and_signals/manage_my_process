@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
+#print i am alive 
 
-while [ True ]
+for (( ; ; ))
 do 
 	echo "I am alive!"
 	sleep 2
