@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
-#Bash script that configures an Ubuntu server.
+# Displays all acive IPv4 addresses on the machine.
+
 hostname -I
+
