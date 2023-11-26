@@ -1,12 +1,9 @@
 #!/usr/bin/env bash
-
-# Set the SSH key path
+# A Bash script that uses ssh to connect to your server
 private_key="~/.ssh/school"
 
-# Set the server and username
 server="52.91.121.27"
 username="ubuntu"
 
-# SSH connection using single-character flags
 ssh -i $private_key $username@$server
 
