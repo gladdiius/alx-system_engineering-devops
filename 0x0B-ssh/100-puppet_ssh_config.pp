@@ -1,13 +1,10 @@
-file { '/home/ubuntu/.ssh/config':
+file { '/home/ubuntu/.ssh/config': # Replace 'your_username' with your actual username
   ensure => file,
-  content => "
-    Host your_server_alias
-      HostName your_server_ip_or_domain
-      User ubuntu
-      IdentityFile ~/.ssh/school
-      PreferredAuthentications publickey
-      PasswordAuthentication no
-      LogLevel QUIET
-  ",
+  content => "\
+Host *
+    IdentityFile ~/.ssh/school
+",
+  mode => '0600',
+  owner => 'your_username', # Replace 'your_username' with your actual username,
 }
 
