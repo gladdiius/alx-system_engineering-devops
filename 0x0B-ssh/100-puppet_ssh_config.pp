@@ -1,4 +1,4 @@
-file { '/home/your_username/.ssh/config':
+file { '/home/ubuntu/.ssh/config':
   ensure => file,
   content => "
     Host your_server_alias
