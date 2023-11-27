@@ -1,10 +1,15 @@
-#!/usr/bin/env bash
-# Update package list and install Nginx
+#!/bin/bash
+# Install Nginx
 sudo apt update
 sudo apt install -y nginx
 
-echo "<html><head><title>Hello World!</title></head><body><p>Hello World!</p></body></html>" | sudo tee /var/www/html/index.html
+# Create directory for HTML files
+sudo mkdir -p /var/www/html
 
+# Create a Hello World HTML file
+echo "<html><head><title>Hello World!</title></head><body><p>Hello World!</p></body></html>" | /var/www/html/index.html
+
+# Configure Nginx
 sudo bash -c 'cat <<EOL > /etc/nginx/sites-available/default
 server {
     listen 80 default_server;
@@ -22,6 +27,6 @@ server {
 EOL'
 
 # Restart Nginx
-sudo /etc/init.d/nginx restart
+sudo service nginx restart
 
 
