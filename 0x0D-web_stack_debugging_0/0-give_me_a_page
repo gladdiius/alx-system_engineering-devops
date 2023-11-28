@@ -1,0 +1,16 @@
+# Access the Docker container
+docker exec -it <container_id> /bin/bash
+
+# Install Apache if not already installed
+apt-get update
+apt-get install -y apache2
+
+# Create or edit the default index.html file
+echo "Hello Holberton" > /var/www/html/index.html
+
+# Restart Apache to apply the changes
+service apache2 restart
+
+# Exit the container
+exit
+
