@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 # Check if Nginx is installed
 if ! command -v nginx &> /dev/null; then
-    echo "Nginx is not installed. Please run 1-install_nginx_web_server script first."
     exit 1
 fi
 
@@ -37,6 +36,4 @@ echo "$REDIRECT_CONFIG" | sudo tee -a /etc/nginx/nginx.conf
 
 # Reload Nginx to apply the changes
 sudo systemctl reload nginx
-
-echo "Nginx has been configured for 301 redirection from /redirect_me to http://new_page_url."
 
