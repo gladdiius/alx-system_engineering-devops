@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# Assume that the Nginx server is already installed and configured (1-install_nginx_web_server)
+
+# File paths
+NGINX_CONF="/etc/nginx/nginx.conf"
+NOT_FOUND_CONF="/etc/nginx/sites-available/4-not_found_page_404"
+
+# Create a new Nginx configuration file for custom 404 page
+cat <<EOL > "$NOT_FOUND_CONF"
+server {
+    listen 80;
+    server_name _;
+
+    error_page 404 /404.html;
+    location = /404.html {
+        root /usr/share/nginx/html;
+        internal;
+        return 404 '<html><head><title>404 Not Found</title></head><body><h1>404 Not Found</h1><p>Ceci n\'est pas une page</p></body></html>';
+    }
+
+    # Include additional server configurations if needed
+}
+EOL
+
+# Create a symbolic link to enable the new site
+ln -s "$NOT_FOUND_CONF" "/etc/nginx/sites-enabled/"
+
+# Test Nginx configuration
+nginx -t
+
+# Reload Nginx to apply the changes
+systemctl reload nginx
+
+# Optionally, restart Nginx to ensure changes take effect
+# systemctl restart nginx
+
