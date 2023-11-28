@@ -1,5 +1,7 @@
+#!/usr/bin/env bash
+
 # Access the Docker container
-docker exec -it <container_id> /bin/bash
+docker exec -it 47ca3994a491 /bin/bash
 
 # Install Apache if not already installed
 apt-get update
