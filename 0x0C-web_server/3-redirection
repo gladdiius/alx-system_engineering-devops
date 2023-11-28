@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# Assume that the Nginx server is already installed and configured (1-install_nginx_web_server)
+
+NGINX_CONF="/etc/nginx/nginx.conf"
+REDIRECTION_CONF="/etc/nginx/sites-available/3-redirection"
+
+# Create a new Nginx configuration file for redirection
+cat <<EOL > "$REDIRECTION_CONF"
+server {
+    listen 80;
+    server_name _;
+
+    location /redirect_me {
+        return 301 http://example.com/new-page; # Change this URL to the desired destination
+    }
+
+}
+EOL
+
+ln -s "$REDIRECTION_CONF" "/etc/nginx/sites-enabled/"
+
+nginx -t
+
+systemctl reload nginx
+
