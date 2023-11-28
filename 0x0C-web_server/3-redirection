@@ -1,25 +1,42 @@
 #!/usr/bin/env bash
-# Assume that the Nginx server is already installed and configured (1-install_nginx_web_server)
+# Check if Nginx is installed
+if ! command -v nginx &> /dev/null; then
+    echo "Nginx is not installed. Please run 1-install_nginx_web_server script first."
+    exit 1
+fi
 
-NGINX_CONF="/etc/nginx/nginx.conf"
-REDIRECTION_CONF="/etc/nginx/sites-available/3-redirection"
-
-# Create a new Nginx configuration file for redirection
-cat <<EOL > "$REDIRECTION_CONF"
+# Configuration for 301 redirection
+REDIRECT_CONFIG="\
 server {
     listen 80;
-    server_name _;
+    server_name localhost;
 
     location /redirect_me {
-        return 301 http://example.com/new-page; # Change this URL to the desired destination
+        return 301 http://new_page_url;
     }
 
-}
-EOL
+    # Add additional server blocks or configurations if needed
 
-ln -s "$REDIRECTION_CONF" "/etc/nginx/sites-enabled/"
+    error_page 404 /404.html;
+    location = /404.html {
+        root /usr/share/nginx/html;
+        internal;
+    }
 
-nginx -t
+    # Add other error pages and configurations if needed
 
-systemctl reload nginx
+    include /etc/nginx/sites-enabled/*;
+}"
+
+# Create a backup of the default Nginx configuration
+sudo cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
+
+# Use sed to replace the last line of nginx.conf with the new configuration
+sudo sed -i '$ d' /etc/nginx/nginx.conf
+echo "$REDIRECT_CONFIG" | sudo tee -a /etc/nginx/nginx.conf
+
+# Reload Nginx to apply the changes
+sudo systemctl reload nginx
+
+echo "Nginx has been configured for 301 redirection from /redirect_me to http://new_page_url."
 
