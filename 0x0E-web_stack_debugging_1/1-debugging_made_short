@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# debugging a bug
+apt-get update
+apt-get install -y nginx
+echo "server { listen *:80; server_name _; location / { root /usr/share/nginx/html; index index.html index.htm; } }" > /etc/nginx/sites-available/default
+service nginx stop
+
