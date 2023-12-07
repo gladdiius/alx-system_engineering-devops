@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 # Check if Nginx is installed
 if ! command -v nginx &> /dev/null; then
     echo "Nginx is not installed. Please install it first."
