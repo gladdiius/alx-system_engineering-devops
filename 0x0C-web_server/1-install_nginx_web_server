@@ -1,16 +1,31 @@
 #!/usr/bin/env bash
-# Update the package list
-apt-get update
+# Update package list and install nginx
+sudo apt-get update
+sudo apt-get install -y nginx
 
-# Install Nginx
-apt-get install -y nginx
+# Create a simple HTML file with "Hello World!"
+echo "<html><body>Hello World!</body></html>" | sudo tee /var/www/html/index.html > /dev/null
 
-# Create a simple HTML page with the content "Hello World!"
-echo "<html><body>Hello World!</body></html>" > /var/www/html/index.html
+# Replace the default Nginx configuration with a custom one
+sudo cat <<EOL > /etc/nginx/sites-available/default
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
 
-# Configure Nginx to listen on port 80
-sed -i 's/listen 80 default_server;/listen 80;/g' /etc/nginx/sites-available/default
+    root /var/www/html;
+    index index.html;
+
+    server_name _;
+
+    location / {
+        try_files \$uri \$uri/ =404;
+    }
+}
+EOL
 
 # Restart Nginx (without using systemctl)
-/etc/init.d/nginx restart
+sudo /etc/init.d/nginx restart
+
+# Confirm that Nginx is running and serving "Hello World!" at the root
+curl localhost
 
