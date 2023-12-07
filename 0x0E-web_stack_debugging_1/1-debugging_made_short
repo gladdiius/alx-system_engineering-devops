@@ -1,7 +1,7 @@
-#!/usr/bin/env bash
-# debugging a bug
+#!/usr/bin/bash
+# debugging
 apt-get update
 apt-get install -y nginx
-echo "server { listen *:80; server_name _; location / { root /usr/share/nginx/html; index index.html index.htm; } }" > /etc/nginx/sites-available/default
-service nginx stop
-
+ip -4 addr show scope global | grep inet | awk '{print $2}' | cut -d '/' -f 1 | xargs -I {} sh -c "echo 'server { listen {}:80; server_name _; location / { root /usr/share/nginx/html; index index.html index.htm; } }' > /etc/nginx/sites-available/default"
+echo -e "#!/bin/bash\nservice nginx status | grep -q 'not running' && echo '* nginx is not running'" > /usr/local/bin/check-nginx
+chmod +x /usr/local/bin/check-nginx
