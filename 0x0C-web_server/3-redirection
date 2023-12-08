@@ -1,26 +1,9 @@
 #!/usr/bin/env bash
-# redirecting to another page.
-apt-get update
+# Update the package index
+apt-get update -y
 apt-get install -y nginx
 
-# Configure nginx to listen on port 80
 server_block="/etc/nginx/sites-available/default"
-echo "server {
-        listen 80 default_server;
-        listen [::]:80 default_server;
-        
-        root /var/www/html;
-        index index.html index.htm;
-        
-        server_name _;
-        
-        location / {
-                try_files \$uri \$uri/ =404;
-        }
-
-        location /redirect_me {
-                return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
-        }
-}" > $server_block
+sed -i '/^\s*location \/ {/a \ \n \ \ \ \ location \/redirect_me {\n \ \ \ \ \ \ \ return 301 https:\/\/www.youtube.com\/watch?v=QH2-TGUlwu4;\n \ \ \ \ }\n' "$server_block"
 
 kill -HUP "$(pgrep nginx)"
