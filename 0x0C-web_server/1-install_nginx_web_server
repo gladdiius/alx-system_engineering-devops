@@ -4,7 +4,7 @@ sudo apt-get update
 sudo apt-get install -y nginx
 
 # Create a simple HTML file with "Hello World!"
-echo "<html><body>Hello World!</body></html>" | sudo tee /var/www/html/index.html > /dev/null
+echo "Hello World!" | sudo tee /var/www/html/index.html > /dev/null
 
 # Replace the default Nginx configuration with a custom one
 sudo tee /etc/nginx/sites-available/default > /dev/null <<EOL
