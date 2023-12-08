@@ -2,30 +2,21 @@
 # Update package list and install nginx
 sudo apt-get update
 sudo apt-get install -y nginx
-
-# Create a simple HTML file with "Hello World!"
 echo "Hello World!" | sudo tee /var/www/html/index.html > /dev/null
-
-# Replace the default Nginx configuration with a custom one
 sudo tee /etc/nginx/sites-available/default > /dev/null <<EOL
 server {
     listen 80 default_server;
     listen [::]:80 default_server;
-
     root /var/www/html;
     index index.html;
-
     server_name _;
-
     location / {
         try_files \$uri \$uri/ =404;
     }
+    location /redirect_me {
+        return 301 https://www.example.com/;
+    }
 }
 EOL
-
-# Restart Nginx without using systemctl
 sudo service nginx restart
-
-# Confirm that Nginx is running and serving "Hello World!" at the root
 curl localhost
-

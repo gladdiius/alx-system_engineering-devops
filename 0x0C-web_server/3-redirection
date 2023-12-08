@@ -1,7 +1,22 @@
 #!/usr/bin/env bash
-# Update the Nginx configuration to include the redirection rule
-sudo sed -i '/server_name _;/a \\n\tlocation /redirect_me {\n\t\treturn 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n\t}' /etc/nginx/sites-available/default
-sudo nginx -t
-
-# If the test is successful, reload Nginx to apply the changes
-sudo systemctl reload nginx
+# Update package list and install nginx
+sudo apt-get update
+sudo apt-get install -y nginx
+echo "Hello World!" | sudo tee /var/www/html/index.html > /dev/null
+sudo tee /etc/nginx/sites-available/default > /dev/null <<EOL
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    root /var/www/html;
+    index index.html;
+    server_name _;
+    location / {
+        try_files \$uri \$uri/ =404;
+    }
+    location /redirect_me {
+        return 301 https://www.example.com/;
+    }
+}
+EOL
+sudo service nginx restart
+curl localhost
