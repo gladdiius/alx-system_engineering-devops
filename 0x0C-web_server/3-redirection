@@ -1,39 +1,29 @@
 #!/usr/bin/env bash
-# Check if Nginx is installed
-if ! command -v nginx &> /dev/null; then
-    exit 1
-fi
+# redirecting to another page.
+apt-get update
+apt-get install -y nginx
 
-# Configuration for 301 redirection
-REDIRECT_CONFIG="\
-server {
-    listen 80;
-    server_name localhost;
+# Configure nginx to listen on port 80
+server_block="/etc/nginx/sites-available/default"
+echo "server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+        
+        root /var/www/html;
+        index index.html index.htm;
+        
+        server_name _;
+        
+        location / {
+                try_files \$uri \$uri/ =404;
+        }
 
-    location /redirect_me {
-        return 301 http://new_page_url;
-    }
+        location /redirect_me {
+                return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
+        }
+}" > $server_block
 
-    # Add additional server blocks or configurations if needed
+kill -HUP $(pgrep nginx)
 
-    error_page 404 /404.html;
-    location = /404.html {
-        root /usr/share/nginx/html;
-        internal;
-    }
-
-    # Add other error pages and configurations if needed
-
-    include /etc/nginx/sites-enabled/*;
-}"
-
-# Create a backup of the default Nginx configuration
-sudo cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
-
-# Use sed to replace the last line of nginx.conf with the new configuration
-sudo sed -i '$ d' /etc/nginx/nginx.conf
-echo "$REDIRECT_CONFIG" | sudo tee -a /etc/nginx/nginx.conf
-
-# Reload Nginx to apply the changes
-sudo systemctl reload nginx
-
+# Create a default index.html
+echo "Hello World!" > /var/www/html/index.html
