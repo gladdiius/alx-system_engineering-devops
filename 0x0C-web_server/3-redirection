@@ -23,7 +23,4 @@ echo "server {
         }
 }" > $server_block
 
-kill -HUP $(pgrep nginx)
-
-# Create a default index.html
-echo "Hello World!" > /var/www/html/index.html
+kill -HUP "$(pgrep nginx)"
