@@ -1,9 +1,19 @@
 #!/usr/bin/env bash
 # Update the package index
-apt-get update -y
-apt-get install -y nginx
+if ! command -v nginx &> /dev/null; then
+    sudo apt-get update
+    sudo apt-get install -y nginx
+fi
 
-server_block="/etc/nginx/sites-available/default"
-sed -i '/^\s*location \/ {/a \ \n \ \ \ \ location \/redirect_me {\n \ \ \ \ \ \ \ return 301 https:\/\/www.youtube.com\/watch?v=QH2-TGUlwu4;\n \ \ \ \ }\n' "$server_block"
+echo '<html><head><meta http-equiv="refresh" content="0;url=https://www.example.com/new_page"></head></html>' | sudo tee /var/www/html/redirect_me/index.html > /dev/null
 
-kill -HUP "$(pgrep nginx)"
+# Configure Nginx for redirection using sed
+sudo sed -i '/server_name _;/a \
+\
+    location /redirect_me { \
+        return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4; \
+    }' /etc/nginx/sites-available/default
+
+# Test Nginx configuration and restart the server
+sudo nginx -t
+sudo service nginx restart
