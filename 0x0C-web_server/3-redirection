@@ -1,12 +1,7 @@
 #!/usr/bin/env bash
-# configuring server so /redirect_me is redirecting to another page.
-./1-install_nginx_web_server.sh
-
-REDIRECT_CONFIG="location /redirect_me {
-    return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
-}"
-
-sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.backup
-sudo sed -i "/location \/ {/a $REDIRECT_CONFIG" /etc/nginx/sites-available/default
+# Update the Nginx configuration to include the redirection rule
+sudo sed -i '/server_name _;/a \\n\tlocation /redirect_me {\n\t\treturn 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n\t}' /etc/nginx/sites-available/default
 sudo nginx -t
-sudo service nginx reload
+
+# If the test is successful, reload Nginx to apply the changes
+sudo systemctl reload nginx
