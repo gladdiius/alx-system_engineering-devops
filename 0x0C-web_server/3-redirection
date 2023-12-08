@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
-# Update the package index
-apt update -y
-apt install -y nginx
+# configuring server so /redirect_me is redirecting to another page.
 redirection_block="location /redirect_me {\n\treturn 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n}"
 sed -i "/^\s*location \/ {/a $redirection_block" /etc/nginx/sites-available/default
 kill -HUP "$(pgrep nginx)"
