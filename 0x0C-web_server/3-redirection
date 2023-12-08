@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # Install Nginx web server if not already installed
-if ! command -v nginx &>/dev/null; then
+if ! command -v nginx &> /dev/null; then
     sudo apt-get update
     sudo apt-get install -y nginx
 fi
 
 # Create a simple HTML file for redirection
-echo '<html><head><meta http-equiv="refresh" content="0;url="https://www.youtube.com/watch?v=QH2-TGUlwu4"></head></html>' | sudo tee /var/www/html/redirect_me/index.html > /dev/null
+echo '<html><head><meta http-equiv="refresh" content="0;url=https://www.youtube.com/watch?v=QH2-TGUlwu4"></head></html>' | sudo tee /var/www/html/redirect_me/index.html > /dev/null
 
 # Configure Nginx for redirection using sed
 config_block=$(
@@ -17,8 +17,14 @@ config_block=$(
 EOL
 )
 
+# Backup the default Nginx configuration file
+sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
+
+# Use sed to replace the location block in the default configuration
 sudo sed -i "/server_name _;/a $config_block" /etc/nginx/sites-available/default
 
 # Test Nginx configuration and restart the server
 sudo nginx -t && sudo service nginx restart
+
+echo "Nginx redirection configured successfully."
 
