@@ -1,36 +1,30 @@
 #!/usr/bin/env bash
-# Assume that the Nginx server is already installed and configured (1-install_nginx_web_server)
+# Update package list and install nginx
+sudo apt-get update
+sudo apt-get install -y nginx
 
-# File paths
-NGINX_CONF="/etc/nginx/nginx.conf"
-NOT_FOUND_CONF="/etc/nginx/sites-available/4-not_found_page_404"
+echo "Hello World!" | sudo tee /var/www/html/index.html > /dev/null
 
-# Create a new Nginx configuration file for custom 404 page
-cat <<EOL > "$NOT_FOUND_CONF"
+echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html > /dev/null
+
+sudo tee /etc/nginx/sites-available/default > /dev/null <<EOL
 server {
-    listen 80;
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    root /var/www/html;
+    index index.html;
     server_name _;
-
+    location / {
+        try_files \$uri \$uri/ =404;
+    }
     error_page 404 /404.html;
     location = /404.html {
-        root /usr/share/nginx/html;
         internal;
-        return 404 '<html><head><title>404 Not Found</title></head><body><h1>404 Not Found</h1><p>Ceci n\'est pas une page</p></body></html>';
     }
-
-    # Include additional server configurations if needed
+    location = /redirect_me {
+        return 301 https://www.example.com/;
+    }
 }
 EOL
-
-# Create a symbolic link to enable the new site
-ln -s "$NOT_FOUND_CONF" "/etc/nginx/sites-enabled/"
-
-# Test Nginx configuration
-nginx -t
-
-# Reload Nginx to apply the changes
-systemctl reload nginx
-
-# Optionally, restart Nginx to ensure changes take effect
-# systemctl restart nginx
-
+sudo service nginx restart
+curl localhost
