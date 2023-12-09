@@ -26,7 +26,7 @@ file { '/etc/nginx/sites-available/default':
         try_files \$uri \$uri/ =404;
       }
 
-      location = /redirect_me {
+      location /redirect_me {
         return 301 https://www.example.com/;
       }
     }
