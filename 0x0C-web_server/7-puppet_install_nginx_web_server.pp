@@ -32,7 +32,7 @@ file { '/etc/nginx/sites-available/default':
     }
   ",
   require => Package['nginx'],
-  notify  => Service['nginx'],
+  notify  => Exec['nginx-restart'],
 }
 
 # Define the index.html file
@@ -43,8 +43,8 @@ file { '/var/www/html/index.html':
 }
 
 # Restart Nginx when the configuration changes
-exec { 'nginx-reload':
-  command     => 'systemctl reload nginx',
+exec { 'nginx-restart':
+  command     => '/usr/sbin/service nginx restart',
   refreshonly => true,
-  subscribe   => File['/etc/nginx/sites-available/default'],
+  require     => File['/etc/nginx/sites-available/default'],
 }
