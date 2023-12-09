@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Update package list and install <link>nginx</link>
+# Update package list and install nginx
 sudo apt-get update
 sudo apt-get install -y nginx
 echo "Hello World!" | sudo tee /var/www/html/index.html > /dev/null
@@ -13,11 +13,10 @@ server {
     location / {
         try_files \$uri \$uri/ =404;
     }
-    location = /redirect_me {
-        return 301 <link>https://www.example.com/</link>;
+    location /redirect_me {
+        return 301 https://www.example.com/;
     }
 }
 EOL
-
 sudo service nginx restart
 curl localhost
