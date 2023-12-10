@@ -1,5 +1,45 @@
 #!/usr/bin/env bash
 #debugging
-apt-get update
-apt-get install nginx -y
-service nginx start
+#!/bin/bash
+# Check if Nginx is installed
+if ! command -v nginx &> /dev/null
+then
+    echo "Nginx is not installed. Installing Nginx..."
+    apt update
+    apt install -y nginx
+else
+    echo "Nginx is already installed."
+fi
+
+# Check if Nginx is running
+if systemctl is-active --quiet nginx
+then
+    echo "Nginx is running."
+else
+    echo "Nginx is not running. Starting Nginx..."
+    systemctl start nginx
+fi
+
+# Check if port 80 is open
+if ufw status | grep -q "80.*ALLOW"
+then
+    echo "Port 80 is open."
+else
+    echo "Port 80 is closed. Opening port 80..."
+    ufw allow 80
+fi
+
+# Test Nginx configuration
+if nginx -t
+then
+    echo "Nginx configuration is valid. Reloading Nginx..."
+    systemctl reload nginx
+else
+    echo "Nginx configuration is invalid. Please check the configuration file for errors."
+    exit 1
+fi
+
+# Print Nginx status and IP address
+echo "Nginx is listening on port 80 of the following IP address(es):"
+hostname -I
+
