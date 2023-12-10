@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
-#debugging
-#!/bin/bash
-# Check if Nginx is installed
+# debugging
 if ! command -v nginx &> /dev/null
 then
     echo "Nginx is not installed. Installing Nginx..."
