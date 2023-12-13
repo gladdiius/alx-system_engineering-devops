@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 # Update package list and install HAProxy
-sudo apt update
-sudo apt install -y haproxy
+if [ -x "$(command -v nginx)" ]; then
+    echo "Nginx is already installed"
+else
+    sudo apt update
+    sudo apt install -y Nginx
+fi
 
 # Configure HAProxy to send traffic to web-01 and web-02 using roundrobin algorithm
 echo "
@@ -11,8 +15,8 @@ frontend http_front
 
 backend http_back
     balance roundrobin
-    server 54.242.190.120 54.242.190.120:80 check
-    server 54.237.115.5   54.237.115.5:80 check
+    server web-01 web-01:80 check
+    server web-02 web-02:80 check
 " | sudo tee /etc/haproxy/haproxy.cfg
 
 # Enable HAProxy init script for management
