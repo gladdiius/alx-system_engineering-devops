@@ -3,5 +3,5 @@
 # shellcheck disable=SC2154
 sudo apt-get update
 sudo apt-get install -y nginx
-echo "add_header X-Served-By $hostname;" | sudo tee -a /etc/nginx/conf.d/custom_response_headers.conf > /dev/null
-sudo systemctl restart nginx
+echo "add_header X-Served-By $hostname;" | sudo tee -a /etc/nginx/conf.d/custom_response_headers.conf
+sudo service nginx restart

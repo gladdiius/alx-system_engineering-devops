@@ -1,11 +1,7 @@
 #!/usr/bin/env bash
 # Update package list and install HAProxy
-if [ -x "$(command -v nginx)" ]; then
-    echo "Nginx is already installed"
-else
-    sudo apt update
-    sudo apt install -y Nginx
-fi
+sudo apt update
+sudo apt install -y Nginx
 
 # Configure HAProxy to send traffic to web-01 and web-02 using roundrobin algorithm
 echo "
