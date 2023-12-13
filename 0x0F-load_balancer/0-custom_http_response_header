@@ -3,30 +3,8 @@
 sudo apt-get update
 sudo apt-get install -y nginx
 
-# Get the hostname of the server
-hostname=$(hostname)
+# Set the custom HTTP response header
+echo 'add_header X-Served-By $hostname;' | sudo tee -a /etc/nginx/conf.d/custom_response_headers.conf
 
-# Configure Nginx with custom HTTP header
-sudo bash -c 'cat << EOF > /etc/nginx/sites-available/default
-server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-
-    server_name _;
-
-    add_header X-Served-By $hostname;
-
-    location / {
-        # Your additional configurations go here
-        # ...
-        try_files $uri $uri/ =404;
-    }
-}
-EOF'
-
-# Reload Nginx to apply changes
-sudo systemctl reload nginx
-
-# Output a message indicating successful configuration
-echo "Nginx has been configured with a custom HTTP header. X-Served-By: $hostname"
-
+# Restart Nginx to apply the changes
+sudo systemctl restart nginx
