@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+# Function to display information about a subdomain
+display_info() {
+  local subdomain=$1
+  local domain=$2
+  local record_type=$3
+  local destination=$4
+
+  echo "The subdomain $subdomain is a $record_type record and points to $destination"
+}
+
+# Function to query DNS information and display results
+query_dns() {
+  local subdomain=$1
+  local domain=$2
+
+  # Declare and assign separately to avoid SC2155
+  local result
+  result=$(dig "$subdomain.$domain" | awk '/ANSWER SECTION:/ {getline; print}')
+
+  # Extract record type and destination IP from the result
+  local record_type
+  record_type=$(echo "$result" | awk '{print $4}')
+
+  local destination
+  destination=$(echo "$result" | awk '{print $5}')
+
+  # Display information about the subdomain
+  display_info "$subdomain" "$domain" "$record_type" "$destination"
+}
+
+# Main script logic
+if [ $# -eq 1 ]; then
+  # Display information for default subdomains
+  query_dns www "$1"
+  query_dns lb-01 "$1"
+  query_dns web-01 "$1"
+  query_dns web-02 "$1"
+elif [ $# -eq 2 ]; then
+  # Display information for the specified subdomain
+  query_dns "$2" "$1"
+else
+  # Display usage information for incorrect number of arguments
+  echo "Usage: $0 domain [subdomain]"
+fi
+
