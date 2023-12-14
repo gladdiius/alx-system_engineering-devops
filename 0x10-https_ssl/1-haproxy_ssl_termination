@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# Install HAProxy
+sudo apt-get update
+sudo apt-get install -y haproxy
+
+# Acquire SSL Certificate using Certbot
+sudo certbot certonly --standalone -d www.webjournal.tech
+
+# Configure HAProxy for SSL Termination
+cat <<EOF | sudo tee /etc/haproxy/haproxy.cfg
+frontend www-https
+    bind *:443 ssl crt /etc/letsencrypt/live/www.webjournal.tech/fullchain.pem
+
+    http-request set-header X-Forwarded-Proto https
+    default_backend www-backend
+
+backend www-backend
+    server web-01 54.242.190.120:80 check
+    server web-02 54.237.115.5:80 check
+EOF
+
+# Ensure Correct Content is Served on the Web Servers (Nginx assumed)
+echo "Holberton School" | sudo tee /var/www/html/index.html
+
+# Restart HAProxy
+sudo service haproxy restart
+
+# Display Configuration File
+cat /etc/haproxy/haproxy.cfg
+
