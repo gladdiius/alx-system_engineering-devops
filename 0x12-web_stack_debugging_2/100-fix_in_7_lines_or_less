@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# excute whoami under a given user name
+username="$1"
+su -c "whoami" -s /bin/bash "$username"
