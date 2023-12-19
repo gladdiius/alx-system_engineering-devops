@@ -1,48 +1,10 @@
 #!/usr/bin/env bash
-# Install necessary packages
-apk add --no-cache nginx
+# Stop the Nginx service
+systemctl stop nginx
 
-# Create a backup of the default Nginx configuration
-mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
+# Edit the Nginx configuration to run as the nginx user and listen on all active IPs on port 8080
+sed -i 's/user  nginx;/' /etc/nginx/nginx.conf
+sed -i 's/listen       80;/listen       8080;/' /etc/nginx/nginx.conf
 
-# Create a new Nginx configuration file
-cat <<EOF > /etc/nginx/nginx.conf
-user nginx;
-worker_processes auto;
-error_log /var/log/nginx/error.log;
-pid /var/run/nginx.pid;
-
-events {
-    worker_connections 1024;
-}
-
-http {
-    include /etc/nginx/mime.types;
-    default_type application/octet-stream;
-
-    log_format main '\$remote_addr - \$remote_user [\$time_local] "\$request" '
-                      '\$status \$body_bytes_sent "\$http_referer" '
-                      '"\$http_user_agent" "\$http_x_forwarded_for"';
-
-    access_log /var/log/nginx/access.log main;
-
-    sendfile on;
-    tcp_nopush on;
-    tcp_nodelay on;
-    keepalive_timeout 65;
-    types_hash_max_size 2048;
-
-    include /etc/nginx/conf.d/*.conf;
-}
-
-EOF
-
-# Create the directory for the Nginx user and set the correct permissions
-mkdir -p /var/run/nginx
-chown nginx:nginx /var/run/nginx
-
-# Update the default Nginx configuration to listen on all active IPs on port 8080
-sed -i 's/listen\s*80;/listen 8080;/g' /etc/nginx/conf.d/default.conf
-
-# Run Nginx as the nginx user
-nginx -g 'daemon off;'
+# Start the Nginx service
+systemctl start nginx
