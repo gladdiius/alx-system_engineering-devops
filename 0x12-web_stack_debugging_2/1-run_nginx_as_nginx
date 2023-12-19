@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Install necessary packages
 apk add --no-cache nginx
 
