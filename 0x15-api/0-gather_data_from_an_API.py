@@ -20,7 +20,6 @@ def get_employee_todo_progress(employee_id):
 
     # Display information
     print(f"Employee {employee_data.get('name', 'Unknown')} is done with tasks ({completed_tasks}/{total_tasks}):")
-    print(f"{employee_data.get('name', 'Unknown')}:")
 
     # Display completed tasks
     for todo in todos_data:
