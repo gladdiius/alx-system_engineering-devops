@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """ csv formate """
+
 import requests
 import sys
 import csv
@@ -22,7 +23,6 @@ def get_employee_todo_progress(employee_id):
     csv_filename = f"{employee_id}.csv"
     with open(csv_filename, mode='w', newline='') as csv_file:
         csv_writer = csv.writer(csv_file)
-        csv_writer.writerow(["USER_ID", "USERNAME", "TASK_COMPLETED_STATUS", "TASK_TITLE"])
 
         for todo in todos_data:
             user_id = employee_id
