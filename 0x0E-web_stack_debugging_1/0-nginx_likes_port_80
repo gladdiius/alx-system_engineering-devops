@@ -1,15 +1,8 @@
 #!/usr/bin/env bash
 # Update Nginx configuration
-echo "Updating Nginx configuration to listen on port 80..."
-sed -i 's/listen 80 default_server;/listen 80;/g' /etc/nginx/sites-available/default
-
-# Restart Nginx service
-echo "Restarting Nginx service..."
-service nginx restart
-
-# Verify Nginx is now listening on port 80
-echo "Verifying Nginx is listening on port 80..."
-curl 0:80
-
-echo "Script execution completed."
-
+nginx -t
+systemctl status nginx
+netstat -tuln | grep ':80'
+ufw status
+ufw allow 80
+systemctl restart nginx
