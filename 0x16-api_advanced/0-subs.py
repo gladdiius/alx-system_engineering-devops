@@ -7,11 +7,11 @@ def number_of_subscribers(subreddit):
     """Get the number of subscribers for a given subreddit
 
     Args:
-    subreddit (str): The name of the subreddit.
+        subreddit (str): The name of the subreddit.
 
     Returns:
-    int: The number of subscribers of the subreddit.
-    Returns 0 if the subreddit is invalid or if any other error occurs.
+        int: The number of subscribers of the subreddit.
+        Returns 0 if the subreddit is invalid or if any other error occurs.
     """
 
     url = f'https://www.reddit.com/r/{subreddit}/about.json'
