@@ -1,6 +1,7 @@
 #!/usr/bin/python3
-import requests
+""" count. """
 from collections import Counter
+import requests
 
 def count_words(subreddit, word_list, after=None, counts=None):
     if counts is None:
