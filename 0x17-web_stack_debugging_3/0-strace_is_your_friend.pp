@@ -1,3 +1,6 @@
+# Puppet Manifest: 0-strace_is_your_friend.pp
+# Description: Fix Apache 500 error using strace and automate with Puppet
+
 # Define an exec resource to fix the identified issue
 exec { 'fix-apache-issue':
   command     => '/path/to/fix_script.sh',  # Replace with the actual path to your fix script
