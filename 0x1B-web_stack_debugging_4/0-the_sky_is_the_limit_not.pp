@@ -1,4 +1,5 @@
 # File: optimize_nginx.pp
+# Description: Puppet manifest to optimize Nginx configurations for improved performance.
 
 class { 'nginx':
   worker_processes  => auto,
@@ -14,3 +15,6 @@ nginx::resource::vhost { 'default':
     },
   },
 }
+
+# Additional configurations to optimize Nginx can be added here.
+
